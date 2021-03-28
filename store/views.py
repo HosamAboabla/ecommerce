@@ -4,6 +4,8 @@ from .models import *
 import json
 import datetime
 from .utils import cookieCart , cartData , guestOrder
+from django.conf import settings
+from django.http import FileResponse
 # Create your views here.
 def store(request):
 
@@ -107,3 +109,10 @@ def processOrder(request):
         )
 
     return JsonResponse('payment complete' , safe=False)
+
+
+def protectMedia(request , relative_path):
+    
+    absolute_path = '{}/{}'.format(settings.MEDIA_ROOT, relative_path)
+    response = FileResponse(open(absolute_path, 'rb'))
+    return response
